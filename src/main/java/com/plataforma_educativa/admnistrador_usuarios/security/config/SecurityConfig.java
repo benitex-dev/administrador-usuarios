@@ -8,11 +8,13 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -23,19 +25,17 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
-    public SecurityFilterChain filterChain(HttpSecurity httpSec) throws Exception{
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSec)
+            throws Exception{
       return   httpSec
                 .csrf(csrf->csrf.disable())
                 .httpBasic(Customizer.withDefaults())
-                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .formLogin(Customizer.withDefaults())
-                .authorizeHttpRequests(http->
-                        //endpoints publicos
-                      { http.requestMatchers(HttpMethod.GET,"/homenoseg").permitAll();
-                        http.requestMatchers(HttpMethod.GET,"/homeseg").hasAuthority("READ");
-                        http.anyRequest().denyAll();
-                      }).build();
+                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+              .build();
 
 
     }
@@ -44,46 +44,17 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService () {
-        List userDetailsList = new ArrayList<>();
 
-        userDetailsList.add(User.withUsername("admin")
-                .password("1234") // esto si no está codificado, sino, tiene que seguir el algoritmo de codificación
-                .roles("ADMINISTRADOR")
-                .authorities("CREATE", "READ", "UPDATE", "DELETE")
-                .build());
-
-        userDetailsList.add(User.withUsername("alumno")
-                .password("1234") // esto si no está codificado, sino, tiene que seguir el algoritmo de codificación
-                .roles("ESTUDIANTE")
-                .authorities("READ","UPDATE")
-                .build());
-
-        userDetailsList.add(User.withUsername("profe")
-                .password("1234") // esto si no está codificado, sino, tiene que seguir el algoritmo de codificación
-                .roles("PROFESOR")
-                .authorities("UPDATE","READ","CREATE")
-                .build());
-
-        userDetailsList.add(User.withUsername("prueba")
-                .password("1234") // esto si no está codificado, sino, tiene que seguir el algoritmo de codificación
-                .roles("ESTUDIANTE")
-                .authorities("UPDATE")
-                .build());
-
-        return new InMemoryUserDetailsManager(userDetailsList);
-    }
 
 }
