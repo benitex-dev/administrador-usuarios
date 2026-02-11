@@ -1,7 +1,10 @@
 package com.plataforma_educativa.admnistrador_usuarios.service;
 
+import com.plataforma_educativa.admnistrador_usuarios.dto.AuthLoginRequestDTO;
+import com.plataforma_educativa.admnistrador_usuarios.dto.AuthResponseDTO;
 import com.plataforma_educativa.admnistrador_usuarios.model.UserSec;
 import com.plataforma_educativa.admnistrador_usuarios.repository.IUserRepository;
+import com.plataforma_educativa.admnistrador_usuarios.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,10 +26,10 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Autowired
     private IUserRepository userRepo;
 
-   // @Autowired
-  //  private JwtUtils jwtUtils;
-   // @Autowired
-    //private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtUtils jwtUtils;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -55,7 +58,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
                 authorityList
         );
     }
-   /* public AuthResponseDTO loginUser (AuthLoginRequestDTO authLoginRequest){
+    public AuthResponseDTO loginUser (AuthLoginRequestDTO authLoginRequest){
 
         //recuperamos nombre de usuario y contraseña
         String username = authLoginRequest.username();
@@ -69,8 +72,8 @@ public class UserDetailsServiceImp implements UserDetailsService {
         AuthResponseDTO authResponseDTO = new AuthResponseDTO(username, "login ok", accessToken, true);
         return authResponseDTO;
 
-    }*/
-   /* public Authentication authenticate (String username, String password) {
+    }
+    public Authentication authenticate (String username, String password) {
         //con esto debo buscar el usuario
         UserDetails userDetails = this.loadUserByUsername(username);
 
@@ -82,6 +85,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
             throw new BadCredentialsException("Invalid password");
         }
         return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
-    }*/
+    }
 
 }
