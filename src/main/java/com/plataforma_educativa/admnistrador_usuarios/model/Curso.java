@@ -19,14 +19,14 @@ import java.util.List;
 public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idCurso;
     private String nombreCurso;
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     @JoinTable(name = "cursos_estudiantes",
             joinColumns = @JoinColumn(name = "curso_id"),
             inverseJoinColumns = @JoinColumn(name = "estudiante_id"))
     private List<Estudiante> estudiantes=new ArrayList<>();
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_profesor",referencedColumnName = "idProfesor")
     private Profesor profe;
 }

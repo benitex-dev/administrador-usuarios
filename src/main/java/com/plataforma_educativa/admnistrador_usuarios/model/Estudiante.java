@@ -19,12 +19,10 @@ import java.util.Set;
 public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idEstudiante;
     private String nombre;
     private String apellido;
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinTable(name = "cursos_estudiantes",
-            joinColumns = @JoinColumn(name = "estudiante_id"),
-            inverseJoinColumns = @JoinColumn(name = "curso_id"))
+    @ManyToMany(mappedBy = "estudiantes",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+
     private Set<Curso> listCursos =  new HashSet<>();
 }

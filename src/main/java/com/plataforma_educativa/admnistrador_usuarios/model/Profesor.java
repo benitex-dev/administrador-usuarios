@@ -18,8 +18,10 @@ import java.util.Set;
 public class Profesor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @OneToMany
+    private Long idProfesor;
+    private String nombre;
+    private String apellido;
+    @OneToMany(mappedBy = "profe")
     private Set<Curso> listCursos =  new HashSet<>();
 
 }
