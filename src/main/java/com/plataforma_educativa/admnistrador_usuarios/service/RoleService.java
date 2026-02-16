@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 @Service
+@PreAuthorize("denyAll()")
 public class RoleService implements IRoleService{
     @Autowired
     private IRoleRepository roleRepository;

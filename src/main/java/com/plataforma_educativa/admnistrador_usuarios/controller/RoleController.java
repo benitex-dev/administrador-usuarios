@@ -16,7 +16,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/roles")
-//@PreAuthorize("denyAll()")
+//
 public class RoleController {
     @Autowired
     private IRoleService roleService;
