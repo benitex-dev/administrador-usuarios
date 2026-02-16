@@ -12,4 +12,6 @@ public interface ICursoService {
     Curso save(Curso curso);
     void deleteById(Long id);
     Curso update(Curso curso);
+    Optional<Curso> findCursoEntityByNombreCurso(String nombreCurso);
+
 }

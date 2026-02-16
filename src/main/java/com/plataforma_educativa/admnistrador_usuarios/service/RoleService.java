@@ -3,6 +3,7 @@ package com.plataforma_educativa.admnistrador_usuarios.service;
 import com.plataforma_educativa.admnistrador_usuarios.model.Role;
 import com.plataforma_educativa.admnistrador_usuarios.repository.IRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class RoleService implements IRoleService{
 
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public Role save(Role role) {
         return roleRepository.save(role);
     }

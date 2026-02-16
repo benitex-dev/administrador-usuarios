@@ -1,5 +1,6 @@
 package com.plataforma_educativa.admnistrador_usuarios.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,6 @@ public class Estudiante {
     private String nombre;
     private String apellido;
     @ManyToMany(mappedBy = "estudiantes",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-
+    @JsonIgnore
     private Set<Curso> listCursos =  new HashSet<>();
 }

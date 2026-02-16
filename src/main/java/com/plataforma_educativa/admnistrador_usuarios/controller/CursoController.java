@@ -1,9 +1,6 @@
 package com.plataforma_educativa.admnistrador_usuarios.controller;
 
-import com.plataforma_educativa.admnistrador_usuarios.model.Curso;
-import com.plataforma_educativa.admnistrador_usuarios.model.Estudiante;
-import com.plataforma_educativa.admnistrador_usuarios.model.Profesor;
-import com.plataforma_educativa.admnistrador_usuarios.model.UserSec;
+import com.plataforma_educativa.admnistrador_usuarios.model.*;
 import com.plataforma_educativa.admnistrador_usuarios.service.ICursoService;
 import com.plataforma_educativa.admnistrador_usuarios.service.IEstudianteService;
 import com.plataforma_educativa.admnistrador_usuarios.service.IProfesorService;
@@ -12,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/cursos")
@@ -46,7 +41,7 @@ public class CursoController {
     public ResponseEntity<Curso> create(@RequestBody Curso curso){
 
         //obtenemos los alumnos
-        List<Estudiante> estudiantes = new ArrayList<>();
+        Set<Estudiante> estudiantes = new HashSet<>();
         //buscamos los alumnos por id
         for ( Estudiante estudiante: curso.getEstudiantes()){
             estudiantes.add(estudianteService.findById(estudiante.getIdEstudiante()).orElse(null));
@@ -60,9 +55,43 @@ public class CursoController {
         Curso newCurso = new Curso();
         newCurso.setProfe(profe);
         newCurso.setEstudiantes(estudiantes);
-
+        newCurso.setNombreCurso(curso.getNombreCurso());
         cursoService.save(newCurso);
 
+        return ResponseEntity.ok(newCurso);
+    }
+    @PatchMapping
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
+    public ResponseEntity edit(@RequestBody Curso curso){
+
+        //1. primero buscamos el curso por su nombre
+        Optional<Curso> cursoEdit = cursoService.findCursoEntityByNombreCurso(curso.getNombreCurso());
+
+        //2.validamos que hayamos encontrado el curso
+        if(cursoEdit.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        //3.buscamos los estudiantes que tiene el curso, para editarlos y agregarle más
+        Set<Estudiante> estudiantesList = new HashSet<>();
+        Estudiante readEstudiante;
+
+        // Recuperar estudiante/s por su ID
+        for (Estudiante est : curso.getEstudiantes()) {
+            readEstudiante = estudianteService.findById(est.getIdEstudiante()).orElse(null);
+            if (readEstudiante != null) {
+                //si encuentro, guardo en la lista
+                estudiantesList.add(readEstudiante);
+            }
+        }
+
+        // Recuperar profesor por su ID
+        Profesor readProf=profesorService.findById(curso.getProfe().getIdProfesor()).orElse(null);
+
+        //cargamos los datos en nuestra instancia del curso editado
+        cursoEdit.get().setEstudiantes(estudiantesList);
+        cursoEdit.get().setProfe(readProf);
+
+        Curso newCurso = cursoService.save(cursoEdit.get());
         return ResponseEntity.ok(newCurso);
     }
 

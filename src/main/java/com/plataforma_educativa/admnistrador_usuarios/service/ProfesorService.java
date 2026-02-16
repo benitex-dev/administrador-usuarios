@@ -3,6 +3,7 @@ package com.plataforma_educativa.admnistrador_usuarios.service;
 import com.plataforma_educativa.admnistrador_usuarios.model.Profesor;
 import com.plataforma_educativa.admnistrador_usuarios.repository.IProfesorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,26 +15,31 @@ public class ProfesorService implements IProfesorService{
     private IProfesorRepository profeRepo;
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR') || hasRole('ROLE_ESTUDIANTE')||hasRole('ROLE_PROFESOR')")
     public List<Profesor> findAll() {
         return profeRepo.findAll();
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public Optional<Profesor> findById(Long id) {
         return profeRepo.findById(id);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public Profesor save(Profesor profe) {
         return profeRepo.save(profe);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public void deleteById(Long id) {
         profeRepo.deleteById(id);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public Profesor update(Profesor profe) {
         return profeRepo.save(profe);
     }

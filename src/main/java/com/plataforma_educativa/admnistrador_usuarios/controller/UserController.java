@@ -24,21 +24,18 @@ public class UserController {
     private IRoleService roleService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public ResponseEntity<List<UserSec>> getAllUsers() {
         List<UserSec> users = userService.findAll();
         return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
     public ResponseEntity<UserSec> getUserById(@PathVariable Long id) {
         Optional<UserSec> user = userService.findById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE') && hasRole('ROLE_ADMINISTRADOR')")
     public ResponseEntity<UserSec> createUser(@RequestBody UserSec userSec) {
 
         Set<Role> roleList = new HashSet<Role>();

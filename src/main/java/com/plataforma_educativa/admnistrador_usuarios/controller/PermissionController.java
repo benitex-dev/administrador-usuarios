@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/api/permissions")
-@PreAuthorize("denyAll()")
+//@PreAuthorize("denyAll()")
 public class PermissionController {
     @Autowired
     private IPermissionService permissionService;
@@ -35,7 +35,7 @@ public class PermissionController {
 
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE') && hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('CREATE') && hasRole('ROLE_ADMIN')")
     public ResponseEntity<Permission> createPermission(@RequestBody Permission permission){
         Permission newPermission = permissionService.save(permission);
         return ResponseEntity.ok(newPermission);

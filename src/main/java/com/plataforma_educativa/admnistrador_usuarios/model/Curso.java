@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -25,7 +27,7 @@ public class Curso {
     @JoinTable(name = "cursos_estudiantes",
             joinColumns = @JoinColumn(name = "curso_id"),
             inverseJoinColumns = @JoinColumn(name = "estudiante_id"))
-    private List<Estudiante> estudiantes=new ArrayList<>();
+    private Set<Estudiante> estudiantes=new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "id_profesor",referencedColumnName = "idProfesor")
     private Profesor profe;

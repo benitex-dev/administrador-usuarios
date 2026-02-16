@@ -1,5 +1,6 @@
 package com.plataforma_educativa.admnistrador_usuarios.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Profesor {
     private String nombre;
     private String apellido;
     @OneToMany(mappedBy = "profe")
+    @JsonIgnore
     private Set<Curso> listCursos =  new HashSet<>();
 
 }

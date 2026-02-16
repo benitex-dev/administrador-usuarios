@@ -16,7 +16,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/roles")
-@PreAuthorize("denyAll()")
+//@PreAuthorize("denyAll()")
 public class RoleController {
     @Autowired
     private IRoleService roleService;
@@ -59,8 +59,7 @@ public class RoleController {
     }
 
     @PatchMapping
-    @PreAuthorize("hasRole('ROLE_ADMINISTRADOR')")
-    public ResponseEntity editPermission(@RequestBody Role role){
+    public ResponseEntity editRole(@RequestBody Role role){
 
         //1. primero buscamos el rol que llega por parametro
         Optional<Role> rolEdit = roleService.findByName(role.getRole());
@@ -74,7 +73,7 @@ public class RoleController {
         Set<Permission> permissionList = new HashSet<>();
         Permission readPermission;
 
-        // Recuperar la Permission/s por su ID
+        // Recuperar Permission/s por su ID
         for (Permission per : role.getPermissionList()) {
             readPermission = permissionService.findById(per.getId()).orElse(null);
             if (readPermission != null) {

@@ -3,6 +3,7 @@ package com.plataforma_educativa.admnistrador_usuarios.service;
 import com.plataforma_educativa.admnistrador_usuarios.model.UserSec;
 import com.plataforma_educativa.admnistrador_usuarios.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class UserService implements IUserService{
 
 
     @Override
+    @PreAuthorize("hasAuthority('CREATE') && hasRole('ROLE_ADMINISTRADOR')")
     public UserSec save(UserSec userSec) {
         return userRepository.save(userSec);
     }
@@ -36,6 +38,7 @@ public class UserService implements IUserService{
     }
 
     @Override
+    @PreAuthorize("hasAuthority('CREATE') && hasRole('ROLE_ADMINISTRADOR')")
     public void update(UserSec userSec) {
         save(userSec);
     }
