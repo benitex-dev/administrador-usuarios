@@ -41,6 +41,11 @@ public class SecurityConfig {
       return   httpSec
                 .csrf(csrf->csrf.disable())
                 .httpBasic(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                      // Permitir acceso a Swagger y OpenAPI docs
+                      .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                      .anyRequest().authenticated()
+                )
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
               .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
               .build();
