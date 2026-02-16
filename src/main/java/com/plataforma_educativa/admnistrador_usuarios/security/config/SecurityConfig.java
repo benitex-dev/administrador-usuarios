@@ -40,14 +40,16 @@ public class SecurityConfig {
             throws Exception{
       return   httpSec
                 .csrf(csrf->csrf.disable())
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
-                      // Permitir acceso a Swagger y OpenAPI docs
-                      .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                        // Permitir acceso a Swagger, OpenAPI docs y login
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html","/auth/login").permitAll()
                       .anyRequest().authenticated()
                 )
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+              .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
               .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
+              .formLogin(form -> form.disable())
               .build();
 
 
