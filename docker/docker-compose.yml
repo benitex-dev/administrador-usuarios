@@ -5,8 +5,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: administradorUsuariosDB
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
     restart: always
     healthcheck:
       test: ["CMD","mysqladmin","ping","-h","localhost"]
@@ -15,16 +13,21 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 
   admin-users-app:
-    build: administrador-usuarios
+    build: 
+      context: ../backend
+      dockerfile: Dockerfile
     container_name: administrador-usuarios-app
     depends_on:
-      - mysql-db
+      mysql-db:
+        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
       BD_URL: jdbc:mysql://mysql-db:3306/administradorUsuariosDB?createDatabaseIfNotExist=true&serverTimezone=UTC
       BD_USERNAME: root
       BD_PASSWORD: root
+volumes:
+  mysql_data:
