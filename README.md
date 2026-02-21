@@ -46,4 +46,17 @@ Para levantar el entorno completo sin configurar nada localmente:
 
 *Nota: Asegúrate de tener Docker Desktop iniciado antes de ejecutar los comandos.*
 
+🔑 Credenciales de Prueba (Acceso Admin)
+Para facilitar la evaluación del proyecto, el sistema cuenta con un usuario administrador precargado automáticamente al iniciar los contenedores:
+Usuario: admin
+Contraseña: 1234
+
+💡 Cómo probar en Swagger:
+1.Dirigirse al endpoint POST /auth/login.
+2.Ingresar las credenciales arriba mencionadas.
+3.Copiar el jwt del cuerpo de la respuesta.
+4.Hacer clic en el botón "Authorize" (el candado) arriba a la derecha.
+5.Escribir Bearer seguido del token (ej: Bearer eyJhbG...).
+6.¡Listo! Ya podés probar todos los endpoints protegidos.
+
 
