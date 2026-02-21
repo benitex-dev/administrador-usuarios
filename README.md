@@ -39,11 +39,11 @@ Para levantar el entorno completo sin configurar nada localmente:
 
 1. **Clonar el repositorio:** `git clone https://github.com`
 2. **Lanzar contenedores:**
-cd docker
-docker compose up -d
+* cd docker
+* docker compose up -d
 3. **Acceder a la API:** La documentación interactiva (Swagger) estará disponible en:
    http://localhost:8080/swagger-ui/index.html
 
 *Nota: Asegúrate de tener Docker Desktop iniciado antes de ejecutar los comandos.*
 
-4. Abrir Swagger en: `http://localhost:8080/swagger-ui.html`
+
