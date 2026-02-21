@@ -59,4 +59,8 @@ Contraseña: 1234
 5.Escribir Bearer seguido del token (ej: Bearer eyJhbG...).
 6.¡Listo! Ya podés probar todos los endpoints protegidos.
 
+📌 Roadmap:
+Implementación de Social Login (OAuth2) con Google y GitHub.
+
+
 
