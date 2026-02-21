@@ -56,8 +56,9 @@ Contraseña: 1234
 2.Ingresar las credenciales arriba mencionadas.
 3.Copiar el jwt del cuerpo de la respuesta.
 4.Hacer clic en el botón "Authorize" (el candado) arriba a la derecha.
-5.Escribir Bearer seguido del token (ej: Bearer eyJhbG...).
-6.¡Listo! Ya podés probar todos los endpoints protegidos.
+5.Pegar el token que copiamos en el paso 3 
+6.Presionar el botón que dice "Authorize"
+7.¡Listo! Ya podés probar todos los endpoints protegidos.
 
 📌 Roadmap:
 Implementación de Social Login (OAuth2) con Google y GitHub.
