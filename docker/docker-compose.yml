@@ -32,6 +32,8 @@ services:
       BD_URL: jdbc:postgresql://postgres-db:5432/administradorUsuariosDB
       BD_USER: postgres
       BD_PASSWORD: postgres
+      SS_USER: admin
+      SS_PASSWORD: 1234  
     networks:
       - postgres-network
 networks:

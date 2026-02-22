@@ -1,0 +1,62 @@
+package com.plataforma_educativa.administrador_usuarios.security.config.filter;
+
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.plataforma_educativa.administrador_usuarios.utils.JwtUtils;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.Collection;
+
+public class JwtTokenValidator extends OncePerRequestFilter {
+    private JwtUtils jwtUtils;
+
+    public JwtTokenValidator(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
+    }
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        // 🚀 PASO 1: Si la ruta es pública (Login o Swagger), pasamos al siguiente filtro de una.
+        String path = request.getRequestURI();
+        if (path.contains("/auth/login") || path.contains("/swagger-ui") || path.contains("/v3/api-docs")) {
+            filterChain.doFilter(request, response);
+            return; // IMPORTANTE: No seguimos ejecutando el resto del método
+        }
+        if(jwtToken != null) {
+            //en el encabezado antes del token viene la palabra bearer (esquema de autenticación)
+            //por lo que debemos sacarlo
+            jwtToken = jwtToken.substring(7); //son 7 letras + 1 espacio
+            DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
+
+            //si el token es válido, le concedemos el acceso
+            String username = jwtUtils.extractUsername(decodedJWT);
+            //me devuelve claim, necesito pasarlo a String
+            String authorities = jwtUtils.getSpecificClaim(decodedJWT, "authorities").asString();
+
+            //Si todo está ok, hay que setearlo en el Context Holder
+            //Para eso tengo que convertirlos a GrantedAuthority
+            Collection authoritiesList = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+
+            //Si se valida el token, le damos acceso al usuario en el context holder
+            SecurityContext context = SecurityContextHolder.getContext();
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authoritiesList);
+            context.setAuthentication(authentication);
+            SecurityContextHolder.setContext(context);
+
+        }
+
+        // si no viene token, va al siguiente filtro
+        //si no viene el token, esto arroja error
+        filterChain.doFilter(request,response);
+    }
+}
