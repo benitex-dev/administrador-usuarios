@@ -25,7 +25,8 @@ El sistema se compone de dos módulos principales:
 Se implementa un modelo RBAC (Role-Based Access Control):
 - Un usuario puede tener múltiples roles.
 - Un rol puede contener múltiples permisos.
-  ![DER](docs/der.png)
+
+![DER](docs/der.png)
 
 ---
 
