@@ -20,14 +20,12 @@ El sistema se compone de dos módulos principales:
 ### 🎓 Módulo Académico
 - Un profesor puede dictar múltiples cursos.
 - Un curso puede tener múltiples estudiantes (relación N-M).
-  <img width="411" height="536" alt="image" src="https://github.com/user-attachments/assets/edec2b02-363b-4f3c-8c91-a36cb057e49e" />
-
 
 ### 🔐 Módulo de Seguridad
 Se implementa un modelo RBAC (Role-Based Access Control):
 - Un usuario puede tener múltiples roles.
 - Un rol puede contener múltiples permisos.
- <img width="447" height="534" alt="image" src="https://github.com/user-attachments/assets/79bdf6d2-ef91-46c7-a050-c51e5bd6eef8" />
+  ![DER](docs/der.png)
 
 ---
 
