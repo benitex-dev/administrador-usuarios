@@ -13,6 +13,19 @@ Originalmente concebido en MySQL, el sistema fue migrado a **PostgreSQL** para a
 *   **Seguridad Granular:** Implementación de Authenticacion con JWT, OAuth2 y filtros personalizados para la validación de tokens.
 
 ---
+## 📊 Modelo de Datos (DER)
+
+El sistema se compone de dos módulos principales:
+
+### 🎓 Módulo Académico
+- Un profesor puede dictar múltiples cursos.
+- Un curso puede tener múltiples estudiantes (relación N-M).
+
+### 🔐 Módulo de Seguridad
+Se implementa un modelo RBAC (Role-Based Access Control):
+- Un usuario puede tener múltiples roles.
+- Un rol puede contener múltiples permisos.
+---
 
 ## 🛠️ Stack Tecnológico
 *   **Backend:** Java 17, Spring Boot 3.5.10
